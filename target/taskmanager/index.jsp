@@ -39,17 +39,17 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Task Manager</a>
+            <a class="navbar-brand" href="index.jsp">Task Manager</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
+                        <a class="nav-link active" href="index.jsp">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Tasks</a>
+                        <a class="nav-link" href="tasks">Tasks</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
@@ -67,7 +67,7 @@
         <div class="container text-center">
             <h1 class="display-4 fw-bold mb-4">Welcome to Task Manager</h1>
             <p class="lead mb-4">Organize your tasks efficiently and boost your productivity</p>
-            <a href="#" class="btn btn-light btn-lg px-4 me-2">Get Started</a>
+            <a href="tasks" class="btn btn-light btn-lg px-4 me-2">Get Started</a>
             <a href="#" class="btn btn-outline-light btn-lg px-4">Learn More</a>
         </div>
     </section>

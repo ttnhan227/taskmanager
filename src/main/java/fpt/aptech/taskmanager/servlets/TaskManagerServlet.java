@@ -12,7 +12,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import java.util.List;
 
-@WebServlet(name = "TaskManagerServlet", urlPatterns = {"", "/home", "/tasks"})
+@WebServlet(name = "TaskManagerServlet", urlPatterns = {"", "/home", "/tasks", "/tasks/details"})
 public class TaskManagerServlet extends HttpServlet {
     
     @Override
@@ -26,11 +26,62 @@ public class TaskManagerServlet extends HttpServlet {
         } else if (path.equals("/tasks")) {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
             EntityManager em = emf.createEntityManager();
-            List<Tasks> tasks = em.createNamedQuery("Tasks.findAll", Tasks.class).getResultList();
-            em.close();
-            emf.close();
-            request.setAttribute("tasks", tasks);
-            request.getRequestDispatcher("/list.jsp").forward(request, response);
+            try {
+                // Lấy tham số filter và sort
+                String fromDateStr = request.getParameter("fromDate");
+                String toDateStr = request.getParameter("toDate");
+                String sortBy = request.getParameter("sortBy");
+                String order = request.getParameter("order");
+
+                StringBuilder jpql = new StringBuilder("SELECT t FROM Tasks t WHERE 1=1");
+                if (fromDateStr != null && !fromDateStr.isEmpty()) {
+                    jpql.append(" AND t.dueDate >= :fromDate");
+                }
+                if (toDateStr != null && !toDateStr.isEmpty()) {
+                    jpql.append(" AND t.dueDate <= :toDate");
+                }
+                if (sortBy != null && !sortBy.isEmpty()) {
+                    jpql.append(" ORDER BY t." + sortBy);
+                    if (order != null && order.equalsIgnoreCase("desc")) {
+                        jpql.append(" DESC");
+                    } else {
+                        jpql.append(" ASC");
+                    }
+                }
+                var query = em.createQuery(jpql.toString(), Tasks.class);
+                if (fromDateStr != null && !fromDateStr.isEmpty()) {
+                    query.setParameter("fromDate", java.sql.Date.valueOf(fromDateStr));
+                }
+                if (toDateStr != null && !toDateStr.isEmpty()) {
+                    query.setParameter("toDate", java.sql.Date.valueOf(toDateStr));
+                }
+                List<Tasks> tasks = query.getResultList();
+                request.setAttribute("tasks", tasks);
+                request.getRequestDispatcher("/list.jsp").forward(request, response);
+            } finally {
+                em.close();
+                emf.close();
+            }
+        } else if (path.equals("/tasks/details")) {
+            // Lấy chi tiết task theo id
+            String idStr = request.getParameter("id");
+            if (idStr != null && !idStr.isEmpty()) {
+                EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+                EntityManager em = emf.createEntityManager();
+                try {
+                    int id = Integer.parseInt(idStr);
+                    Tasks task = em.find(Tasks.class, id);
+                    if (task != null) {
+                        request.setAttribute("task", task);
+                        request.getRequestDispatcher("/details.jsp").forward(request, response);
+                        return;
+                    }
+                } finally {
+                    em.close();
+                    emf.close();
+                }
+            }
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Task not found");
         }
     }
     
