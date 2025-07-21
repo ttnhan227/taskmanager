@@ -15,6 +15,8 @@
     <servlet-name>TaskManagerServlet</servlet-name>
     <url-pattern>/home</url-pattern>
     <url-pattern>/tasks</url-pattern>
+    <url-pattern>/tasks/*</url-pattern>
+
   </servlet-mapping>
   
   <!-- Default servlet mapping for static resources -->

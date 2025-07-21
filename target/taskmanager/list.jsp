@@ -48,6 +48,10 @@
                         <th>Completed</th>
                         <th>Created At</th>
                         <th>Updated At</th>
+                        <th>Category</th>
+                        <th>Tags</th>
+                        <th>Priority</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,13 +68,19 @@
                         <td><%= task.getIsCompleted() != null && task.getIsCompleted() ? "Yes" : "No" %></td>
                         <td><%= task.getCreatedAt() %></td>
                         <td><%= task.getUpdatedAt() %></td>
+                        <td><%= task.getCategory() %></td>
+                        <td><%= task.getTags() %></td>
+                        <td><%= task.getPriority() %></td>
+                        <td>
+                            <a href="${pageContext.request.contextPath}/tasks/edit?id=<%= task.getId() %>" class="btn btn-sm btn-warning">Edit</a>
+                        </td>
                     </tr>
                     <%
                             }
                         } else {
                     %>
                     <tr>
-                        <td colspan="7" class="text-center">No tasks found.</td>
+                        <td colspan="10" class="text-center">No tasks found.</td>
                     </tr>
                     <%
                         }
