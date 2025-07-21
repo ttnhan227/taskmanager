@@ -13,9 +13,25 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>TaskManagerServlet</servlet-name>
-    <url-pattern>/</url-pattern>
     <url-pattern>/home</url-pattern>
     <url-pattern>/tasks</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Default servlet mapping for static resources -->
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.css</url-pattern>
+    <url-pattern>*.js</url-pattern>
+    <url-pattern>*.png</url-pattern>
+    <url-pattern>*.jpg</url-pattern>
+    <url-pattern>*.jpeg</url-pattern>
+    <url-pattern>*.gif</url-pattern>
+    <url-pattern>*.ico</url-pattern>
+    <url-pattern>*.svg</url-pattern>
+    <url-pattern>*.woff</url-pattern>
+    <url-pattern>*.woff2</url-pattern>
+    <url-pattern>*.ttf</url-pattern>
+    <url-pattern>*.eot</url-pattern>
   </servlet-mapping>
 
   <welcome-file-list>
@@ -28,7 +44,7 @@
 
   <error-page>
     <error-code>401</error-code>
-    <location>/error.html</location>
+    <location>/error.jsp</location>
   </error-page>
 
   <security-constraint>
@@ -48,7 +64,7 @@
     <auth-method>FORM</auth-method>
     <form-login-config>
       <form-login-page>/login.jsp</form-login-page>
-      <form-error-page>/error.html</form-error-page>
+      <form-error-page>/error.jsp</form-error-page>
     </form-login-config>
   </login-config>
 

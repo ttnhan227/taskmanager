@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" type="text/css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg sticky-top">
@@ -56,30 +56,35 @@
                 <a href="tasks" class="cta-btn">View Tasks</a>
             </div>
         </section>
-        <section class="features-section container">
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">📝</div>
-                        <h5>Intuitive Task Management</h5>
-                        <p>Easily create, update, and organize your tasks with a user-friendly interface.</p>
+        <section class="features-section">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Powerful Features</h2>
+                    <p class="section-subtitle">Everything you need to stay organized and productive</p>
+                </div>
+                <div class="row justify-content-center g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon">📝</div>
+                            <h5>Intuitive Task Management</h5>
+                            <p>Easily create, update, and organize your tasks with a user-friendly interface designed for maximum productivity.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon">⏰</div>
+                            <h5>Smart Reminders</h5>
+                            <p>Never miss a deadline again with our intelligent notification system that keeps you on track with your tasks.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h5>Progress Tracking</h5>
+                            <p>Gain insights into your productivity with detailed analytics and progress visualization tools.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">⏰</div>
-                        <h5>Smart Reminders</h5>
-                        <p>Never miss a deadline with built-in reminders and notifications.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">📊</div>
-                        <h5>Progress Tracking</h5>
-                        <p>Monitor your productivity and track your progress over time.</p>
-                    </div>
-                </div>
-            </div>
         </section>
     </div>
     <footer class="footer text-center">

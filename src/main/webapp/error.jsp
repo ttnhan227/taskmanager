@@ -7,6 +7,6 @@
 <body>
     <h1>Authentication Error</h1>
     <p>You are not authorized to access this page or your login attempt failed.</p>
-    <a href="/login.jsp">Try again</a>
+    <a href="tasks">Try again</a>
 </body>
 </html> 
