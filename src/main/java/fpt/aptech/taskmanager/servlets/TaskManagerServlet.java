@@ -31,6 +31,15 @@ public class TaskManagerServlet extends HttpServlet {
             emf.close();
             request.setAttribute("tasks", tasks);
             request.getRequestDispatcher("/list.jsp").forward(request, response);
+        } else if (path.equals("/tasks/create")) {
+            // Placeholder: Forward to create.jsp
+            request.getRequestDispatcher("/create.jsp").forward(request, response);
+        } else if (path.equals("/tasks/edit")) {
+            // Placeholder: Forward to edit.jsp
+            request.getRequestDispatcher("/edit.jsp").forward(request, response);
+        } else if (path.equals("/tasks/delete")) {
+            // Placeholder: Forward to delete.jsp
+            request.getRequestDispatcher("/delete.jsp").forward(request, response);
         }
     }
     
