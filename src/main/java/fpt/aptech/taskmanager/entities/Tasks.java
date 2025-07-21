@@ -47,6 +47,15 @@ public class Tasks implements Serializable {
 	@Column(name = "is_completed")
 	private Boolean isCompleted;
 
+	@Column(name = "category")
+	private String category;
+
+	@Column(name = "tags")
+	private String tags; // Comma-separated tags
+
+	@Column(name = "priority")
+	private String priority; // e.g., Low, Medium, High
+
 	@Column(name = "created_at")
 	private Timestamp createdAt;
 
@@ -57,13 +66,16 @@ public class Tasks implements Serializable {
 	}
 
 	public Tasks(String title, String description, Date dueDate, Boolean isCompleted, Timestamp createdAt,
-			Timestamp updatedAt) {
+			Timestamp updatedAt, String category, String tags, String priority) {
 		this.title = title;
 		this.description = description;
 		this.dueDate = dueDate;
 		this.isCompleted = isCompleted;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.category = category;
+		this.tags = tags;
+		this.priority = priority;
 	}
 
 	public Integer getId() {
@@ -104,6 +116,30 @@ public class Tasks implements Serializable {
 
 	public void setIsCompleted(Boolean isCompleted) {
 		this.isCompleted = isCompleted;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	public String getTags() {
+		return tags;
+	}
+
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+
+	public String getPriority() {
+		return priority;
+	}
+
+	public void setPriority(String priority) {
+		this.priority = priority;
 	}
 
 	public Timestamp getCreatedAt() {

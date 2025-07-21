@@ -55,5 +55,16 @@ public class TasksService {
         if (task.getDueDate() != null && task.getDueDate().before(new Date(System.currentTimeMillis()))) {
             throw new IllegalArgumentException("Due date cannot be in the past");
         }
+        if (task.getPriority() != null && !task.getPriority().isEmpty()) {
+            String p = task.getPriority().toLowerCase();
+            if (!(p.equals("low") || p.equals("medium") || p.equals("high"))) {
+                throw new IllegalArgumentException("Priority must be Low, Medium, or High");
+            }
+        }
+        // Optionally validate tags (comma-separated words)
+        if (task.getTags() != null && !task.getTags().matches("^([\\w\\s]+,)*[\\w\\s]+$")) {
+            throw new IllegalArgumentException("Tags must be comma-separated words");
+        }
+        // Category can be optional
     }
 } 
