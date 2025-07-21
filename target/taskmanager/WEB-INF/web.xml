@@ -6,12 +6,69 @@
                              https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          metadata-complete="false">
   <display-name>taskmanager</display-name>
+
+  <servlet>
+    <servlet-name>TaskManagerServlet</servlet-name>
+    <servlet-class>fpt.aptech.taskmanager.servlets.TaskManagerServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TaskManagerServlet</servlet-name>
+    <url-pattern>/home</url-pattern>
+    <url-pattern>/tasks</url-pattern>
+  </servlet-mapping>
   
+  <!-- Default servlet mapping for static resources -->
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>*.css</url-pattern>
+    <url-pattern>*.js</url-pattern>
+    <url-pattern>*.png</url-pattern>
+    <url-pattern>*.jpg</url-pattern>
+    <url-pattern>*.jpeg</url-pattern>
+    <url-pattern>*.gif</url-pattern>
+    <url-pattern>*.ico</url-pattern>
+    <url-pattern>*.svg</url-pattern>
+    <url-pattern>*.woff</url-pattern>
+    <url-pattern>*.woff2</url-pattern>
+    <url-pattern>*.ttf</url-pattern>
+    <url-pattern>*.eot</url-pattern>
+  </servlet-mapping>
+
   <welcome-file-list>
-    <welcome-file>TaskManagerServlet</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
-  
+
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
+
+  <error-page>
+    <error-code>401</error-code>
+    <location>/error.jsp</location>
+  </error-page>
+
+  <security-constraint>
+    <display-name>AdminConstraint</display-name>
+    <web-resource-collection>
+      <web-resource-name>AdminArea</web-resource-name>
+      <url-pattern>/admin/*</url-pattern>
+      <url-pattern>/tasks</url-pattern>
+      <url-pattern>/list.jsp</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>Admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/login.jsp</form-login-page>
+      <form-error-page>/error.jsp</form-error-page>
+    </form-login-config>
+  </login-config>
+
+  <security-role>
+    <role-name>Admin</role-name>
+  </security-role>
 </web-app>
