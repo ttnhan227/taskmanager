@@ -1,11 +1,16 @@
 package fpt.aptech.taskmanager.servlets;
 
+import fpt.aptech.taskmanager.entities.Tasks;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import java.util.List;
 
 @WebServlet(name = "TaskManagerServlet", urlPatterns = {"", "/home", "/tasks"})
 public class TaskManagerServlet extends HttpServlet {
@@ -19,8 +24,13 @@ public class TaskManagerServlet extends HttpServlet {
             // Forward to the home page
             request.getRequestDispatcher("/index.jsp").forward(request, response);
         } else if (path.equals("/tasks")) {
-            // This can be implemented later for task management
-            response.sendRedirect("tasks.jsp");
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("default");
+            EntityManager em = emf.createEntityManager();
+            List<Tasks> tasks = em.createNamedQuery("Tasks.findAll", Tasks.class).getResultList();
+            em.close();
+            emf.close();
+            request.setAttribute("tasks", tasks);
+            request.getRequestDispatcher("/list.jsp").forward(request, response);
         }
     }
     
