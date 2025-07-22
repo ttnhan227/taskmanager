@@ -26,7 +26,8 @@
         .col-category { width: 110px; }
         .col-tags { width: 120px; }
         .col-priority { width: 90px; }
-        .col-actions { width: 80px; }
+        .col-actions { width: 160px; }
+.actions-inline { display: flex; gap: 0.5rem; }
     </style>
 </head>
 <body>
@@ -53,7 +54,36 @@
             </div>
         </section>
         <div class="container task-panel">
-            <h3 class="mb-4 fw-bold">Task List</h3>
+            <!-- Filter & Sort Form -->
+            <form class="row g-3 mb-4 p-3 bg-white rounded shadow-sm" method="get" action="tasks">
+                <div class="col-md-3 col-12">
+                    <label for="fromDate" class="form-label">From Due Date</label>
+                    <input type="date" class="form-control" id="fromDate" name="fromDate" value="<%= request.getParameter("fromDate") != null ? request.getParameter("fromDate") : "" %>">
+                </div>
+                <div class="col-md-3 col-12">
+                    <label for="toDate" class="form-label">To Due Date</label>
+                    <input type="date" class="form-control" id="toDate" name="toDate" value="<%= request.getParameter("toDate") != null ? request.getParameter("toDate") : "" %>">
+                </div>
+                <div class="col-md-3 col-6">
+                    <label for="sortBy" class="form-label">Sort By</label>
+                    <select class="form-select" id="sortBy" name="sortBy">
+                        <option value="">-- None --</option>
+                        <option value="dueDate" <%= "dueDate".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Due Date</option>
+                        <option value="title" <%= "title".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Title</option>
+                        <option value="createdAt" <%= "createdAt".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Created At</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-6">
+                    <label for="order" class="form-label">Order</label>
+                    <select class="form-select" id="order" name="order">
+                        <option value="asc" <%= "asc".equals(request.getParameter("order")) ? "selected" : "" %>>Ascending</option>
+                        <option value="desc" <%= "desc".equals(request.getParameter("order")) ? "selected" : "" %>>Descending</option>
+                    </select>
+                </div>
+                <div class="col-md-1 col-12 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </form>
             <div class="table-responsive">
             <table class="table table-striped table-bordered align-middle">
                 <thead>
@@ -89,10 +119,13 @@
                         <td class="col-tags"><%= task.getTags() %></td>
                         <td class="col-priority"><%= task.getPriority() %></td>
                         <td class="col-actions">
-                            <%
-                                String contextPath = request.getContextPath();
-                            %>
-                            <a href="<%= contextPath %>/tasks/edit?id=<%= task.getId() %>" class="btn btn-sm btn-warning">Edit</a>
+                            <div class="actions-inline">
+                                <%
+                                    String contextPath = request.getContextPath();
+                                %>
+                                <a href="<%= contextPath %>/tasks/details?id=<%= task.getId() %>" class="btn btn-sm btn-info">Details</a>
+                                <a href="<%= contextPath %>/tasks/edit?id=<%= task.getId() %>" class="btn btn-sm btn-warning">Edit</a>
+                            </div>
                         </td>
                     </tr>
                     <%

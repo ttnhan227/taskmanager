@@ -9,6 +9,25 @@
     <title>Task List</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css" type="text/css">
+    <style>
+        .truncate {
+            max-width: 180px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .nowrap {
+            white-space: nowrap;
+        }
+        .col-id { width: 50px; }
+        .col-title { width: 180px; }
+        .col-description { width: 180px; }
+        .col-date { width: 120px; }
+        .col-category { width: 110px; }
+        .col-tags { width: 120px; }
+        .col-priority { width: 90px; }
+        .col-actions { width: 80px; }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg sticky-top">
@@ -19,9 +38,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="home">Home</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="tasks">Tasks</a>
                     </li>
@@ -37,21 +53,51 @@
             </div>
         </section>
         <div class="container task-panel">
-            <h3 class="mb-4 fw-bold">Task List</h3>
-            <table class="table table-striped table-bordered">
+            <!-- Filter & Sort Form -->
+            <form class="row g-3 mb-4 p-3 bg-white rounded shadow-sm" method="get" action="tasks">
+                <div class="col-md-3 col-12">
+                    <label for="fromDate" class="form-label">From Due Date</label>
+                    <input type="date" class="form-control" id="fromDate" name="fromDate" value="<%= request.getParameter("fromDate") != null ? request.getParameter("fromDate") : "" %>">
+                </div>
+                <div class="col-md-3 col-12">
+                    <label for="toDate" class="form-label">To Due Date</label>
+                    <input type="date" class="form-control" id="toDate" name="toDate" value="<%= request.getParameter("toDate") != null ? request.getParameter("toDate") : "" %>">
+                </div>
+                <div class="col-md-3 col-6">
+                    <label for="sortBy" class="form-label">Sort By</label>
+                    <select class="form-select" id="sortBy" name="sortBy">
+                        <option value="">-- None --</option>
+                        <option value="dueDate" <%= "dueDate".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Due Date</option>
+                        <option value="title" <%= "title".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Title</option>
+                        <option value="createdAt" <%= "createdAt".equals(request.getParameter("sortBy")) ? "selected" : "" %>>Created At</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-6">
+                    <label for="order" class="form-label">Order</label>
+                    <select class="form-select" id="order" name="order">
+                        <option value="asc" <%= "asc".equals(request.getParameter("order")) ? "selected" : "" %>>Ascending</option>
+                        <option value="desc" <%= "desc".equals(request.getParameter("order")) ? "selected" : "" %>>Descending</option>
+                    </select>
+                </div>
+                <div class="col-md-1 col-12 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </form>
+            <div class="table-responsive">
+            <table class="table table-striped table-bordered align-middle">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Due Date</th>
+                        <th class="col-id">ID</th>
+                        <th class="col-title">Title</th>
+                        <th class="col-description">Description</th>
+                        <th class="col-date nowrap">Due Date</th>
                         <th>Completed</th>
-                        <th>Created At</th>
-                        <th>Updated At</th>
-                        <th>Category</th>
-                        <th>Tags</th>
-                        <th>Priority</th>
-                        <th>Actions</th>
+                        <th class="col-date nowrap">Created At</th>
+                        <th class="col-date nowrap">Updated At</th>
+                        <th class="col-category">Category</th>
+                        <th class="col-tags">Tags</th>
+                        <th class="col-priority">Priority</th>
+                        <th class="col-actions">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,18 +107,22 @@
                             for (Tasks task : tasks) {
                     %>
                     <tr>
-                        <td><%= task.getId() %></td>
-                        <td><%= task.getTitle() %></td>
-                        <td><%= task.getDescription() %></td>
-                        <td><%= task.getDueDate() %></td>
+                        <td class="col-id"><%= task.getId() %></td>
+                        <td class="col-title truncate" title="<%= task.getTitle() %>"><%= task.getTitle() %></td>
+                        <td class="col-description truncate" title="<%= task.getDescription() %>"><%= task.getDescription() %></td>
+                        <td class="col-date nowrap"><%= task.getDueDate() %></td>
                         <td><%= task.getIsCompleted() != null && task.getIsCompleted() ? "Yes" : "No" %></td>
-                        <td><%= task.getCreatedAt() %></td>
-                        <td><%= task.getUpdatedAt() %></td>
-                        <td><%= task.getCategory() %></td>
-                        <td><%= task.getTags() %></td>
-                        <td><%= task.getPriority() %></td>
-                        <td>
-                            <a href="${pageContext.request.contextPath}/tasks/edit?id=<%= task.getId() %>" class="btn btn-sm btn-warning">Edit</a>
+                        <td class="col-date nowrap"><%= task.getCreatedAt() %></td>
+                        <td class="col-date nowrap"><%= task.getUpdatedAt() %></td>
+                        <td class="col-category"><%= task.getCategory() %></td>
+                        <td class="col-tags"><%= task.getTags() %></td>
+                        <td class="col-priority"><%= task.getPriority() %></td>
+                        <td class="col-actions">
+                            <%
+                                String contextPath = request.getContextPath();
+                            %>
+                            <a href="<%= contextPath %>/tasks/details?id=<%= task.getId() %>" class="btn btn-sm btn-info me-1">Details</a>
+                            <a href="<%= contextPath %>/tasks/edit?id=<%= task.getId() %>" class="btn btn-sm btn-warning">Edit</a>
                         </td>
                     </tr>
                     <%
@@ -87,6 +137,7 @@
                     %>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
     <footer class="footer text-center">

@@ -14,6 +14,24 @@ public class TasksService {
     public List<Tasks> getAllTasks() {
         return repository.findAll();
     }
+    
+    public List<Tasks> getTasksWithFilters(String fromDate, String toDate, String sortBy, String order) {
+        Date from = null;
+        Date to = null;
+        
+        try {
+            if (fromDate != null && !fromDate.isEmpty()) {
+                from = Date.valueOf(fromDate);
+            }
+            if (toDate != null && !toDate.isEmpty()) {
+                to = Date.valueOf(toDate);
+            }
+        } catch (IllegalArgumentException e) {
+            // If date format is invalid, ignore the filter
+        }
+        
+        return repository.findWithFilters(from, to, sortBy, order);
+    }
 
     public Tasks getTaskById(Integer id) {
         return repository.findById(id);

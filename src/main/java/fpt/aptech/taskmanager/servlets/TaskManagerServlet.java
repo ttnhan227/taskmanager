@@ -13,7 +13,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import java.util.List;
 
-@WebServlet(name = "TaskManagerServlet", urlPatterns = {"", "/home", "/tasks"})
+@WebServlet(name = "TaskManagerServlet", urlPatterns = {"", "/home", "/tasks", "/tasks/details"})
 public class TaskManagerServlet extends HttpServlet {
     private final TasksService tasksService = new TasksService();
     
@@ -23,11 +23,34 @@ public class TaskManagerServlet extends HttpServlet {
         String servletPath = request.getServletPath(); // e.g., /tasks
         String pathInfo = request.getPathInfo();       // e.g., /edit
 
-        if ("/tasks".equals(servletPath) && (pathInfo == null || pathInfo.equals(""))) {
-            // List tasks
-            List<Tasks> tasks = tasksService.getAllTasks();
+        if (servletPath.equals("") || servletPath.equals("/home")) {
+            // Home page
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
+        } else if ("/tasks".equals(servletPath) && (pathInfo == null || pathInfo.equals(""))) {
+            // List tasks with optional filtering and sorting
+            String fromDate = request.getParameter("fromDate");
+            String toDate = request.getParameter("toDate");
+            String sortBy = request.getParameter("sortBy");
+            String order = request.getParameter("order");
+            
+            List<Tasks> tasks = tasksService.getTasksWithFilters(fromDate, toDate, sortBy, order);
             request.setAttribute("tasks", tasks);
             request.getRequestDispatcher("/list.jsp").forward(request, response);
+        } else if ("/tasks".equals(servletPath) && "/details".equals(pathInfo)) {
+            // Task details page
+            String idStr = request.getParameter("id");
+            if (idStr != null && !idStr.isEmpty()) {
+                try {
+                    int id = Integer.parseInt(idStr);
+                    Tasks task = tasksService.getTaskById(id);
+                    if (task != null) {
+                        request.setAttribute("task", task);
+                        request.getRequestDispatcher("/details.jsp").forward(request, response);
+                        return;
+                    }
+                } catch (NumberFormatException ignored) {}
+            }
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Task not found");
         } else if ("/tasks".equals(servletPath) && "/edit".equals(pathInfo)) {
             // Edit page
             String idStr = request.getParameter("id");
@@ -44,10 +67,10 @@ public class TaskManagerServlet extends HttpServlet {
             }
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Task not found");
         } else if ("/tasks".equals(servletPath) && "/create".equals(pathInfo)) {
-            // Create page placeholder
+            // Create page
             request.getRequestDispatcher("/create.jsp").forward(request, response);
         } else if ("/tasks".equals(servletPath) && "/delete".equals(pathInfo)) {
-            // Delete page placeholder
+            // Delete page
             request.getRequestDispatcher("/delete.jsp").forward(request, response);
         } else if ("".equals(servletPath) || "/home".equals(servletPath)) {
             // Home page
