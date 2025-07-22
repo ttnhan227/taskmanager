@@ -35,6 +35,26 @@ public class TasksService {
     public void deleteTask(Integer id) {
         repository.delete(id);
     }
+    
+    //Phat
+    public void deleteCompletedTasks() {
+        List<Tasks> completedTasks = repository.findAll().stream()
+                .filter(t -> Boolean.TRUE.equals(t.getIsCompleted()))
+                .collect(Collectors.toList());
+        for (Tasks task : completedTasks) {
+            repository.delete(task.getId());
+        }
+    }
+    
+    //Phat
+    public void toggleTaskStatus(int id, boolean isCompleted) {
+        Tasks task = repository.findById(id);
+        if (task != null) {
+            task.setIsCompleted(isCompleted);
+            task.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            repository.update(task);
+        }
+    }
 
     public List<Tasks> getTasksByCompletion(boolean isCompleted) {
         return repository.findAll().stream()

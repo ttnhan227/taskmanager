@@ -1,0 +1,4 @@
+fpt\aptech\taskmanager\services\TasksService.class
+fpt\aptech\taskmanager\servlets\TaskManagerServlet.class
+fpt\aptech\taskmanager\entities\Tasks.class
+fpt\aptech\taskmanager\repositories\TasksRepository.class

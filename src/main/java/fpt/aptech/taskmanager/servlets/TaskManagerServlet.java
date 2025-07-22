@@ -15,8 +15,9 @@ import java.util.List;
 
 @WebServlet(name = "TaskManagerServlet", urlPatterns = {"", "/home", "/tasks"})
 public class TaskManagerServlet extends HttpServlet {
+
     private final TasksService tasksService = new TasksService();
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -40,15 +41,24 @@ public class TaskManagerServlet extends HttpServlet {
                         request.getRequestDispatcher("/edit.jsp").forward(request, response);
                         return;
                     }
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException ignored) {
+                }
             }
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Task not found");
         } else if ("/tasks".equals(servletPath) && "/create".equals(pathInfo)) {
             // Create page placeholder
             request.getRequestDispatcher("/create.jsp").forward(request, response);
         } else if ("/tasks".equals(servletPath) && "/delete".equals(pathInfo)) {
-            // Delete page placeholder
-            request.getRequestDispatcher("/delete.jsp").forward(request, response);
+            String idStr = request.getParameter("id");
+            if (idStr != null) {
+                int id = Integer.parseInt(idStr);
+                Tasks task = tasksService.getTaskById(id);
+                request.setAttribute("task", task);
+                request.getRequestDispatcher("/delete.jsp").forward(request, response);
+                return;
+            }
+            response.sendRedirect(request.getContextPath() + "/tasks");
+
         } else if ("".equals(servletPath) || "/home".equals(servletPath)) {
             // Home page
             request.getRequestDispatcher("/index.jsp").forward(request, response);
@@ -56,7 +66,7 @@ public class TaskManagerServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -95,11 +105,30 @@ public class TaskManagerServlet extends HttpServlet {
                             return;
                         }
                     }
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException ignored) {
+                }
             }
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Task not found");
+        } else if ("/tasks".equals(servletPath) && "/delete".equals(pathInfo)) {
+            String idStr = request.getParameter("id");
+            if (idStr != null) {
+                int id = Integer.parseInt(idStr);
+                tasksService.deleteTask(id);
+            }
+            response.sendRedirect(request.getContextPath() + "/tasks");
+
+        } else if ("/tasks".equals(servletPath) && "/deleteCompleted".equals(pathInfo)) {
+            tasksService.deleteCompletedTasks();
+            response.sendRedirect(request.getContextPath() + "/tasks");
+
+        } else if ("/tasks".equals(servletPath) && "/toggleStatus".equals(pathInfo)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            boolean isCompleted = Boolean.parseBoolean(request.getParameter("isCompleted"));
+            tasksService.toggleTaskStatus(id, isCompleted);
+            response.sendRedirect(request.getContextPath() + "/tasks");
+
         } else {
-            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "POST method not supported yet");
+            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
         }
     }
 }

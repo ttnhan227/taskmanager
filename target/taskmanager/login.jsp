@@ -65,31 +65,31 @@
         }
     </style>
 </head>
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand" href="home">TaskManager</a>
         </div>
     </nav>
-
-    <div class="container login-container">
-        <div class="login-card">
-            <h2 class="login-title">Welcome Back</h2>
-            <form method="post" action="j_security_check">
-                <div class="mb-3">
-                    <input type="text" class="form-control" name="j_username" placeholder="Username" required>
+    <div class="main-content flex-grow-1 d-flex align-items-center justify-content-center">
+        <div class="container login-container">
+            <div class="login-card">
+                <h2 class="login-title">Welcome Back</h2>
+                <form method="post" action="j_security_check">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="j_username" placeholder="Username" required>
+                    </div>
+                    <div class="mb-4">
+                        <input type="password" class="form-control" name="j_password" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-login">Sign In</button>
+                </form>
+                <div class="login-footer">
+                    <p>Don't have an account? <a href="#">Contact administrator</a></p>
                 </div>
-                <div class="mb-4">
-                    <input type="password" class="form-control" name="j_password" placeholder="Password" required>
-                </div>
-                <button type="submit" class="btn btn-login">Sign In</button>
-            </form>
-            <div class="login-footer">
-                <p>Don't have an account? <a href="#">Contact administrator</a></p>
             </div>
         </div>
     </div>
-
     <footer class="footer text-center">
         <div class="container">
             <p class="mb-0">&copy; 2023 TaskManager. All rights reserved.</p>
