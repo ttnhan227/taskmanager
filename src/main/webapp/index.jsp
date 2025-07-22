@@ -18,9 +18,6 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="home">Home</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="tasks">Tasks</a>
                     </li>
                     <li class="nav-item">
@@ -38,7 +35,7 @@
                     </li>
 <% } else { %>
                     <li class="nav-item">
-                        <span class="navbar-text text-primary">Hello, <%= username %>!</span>
+                        <a class="nav-link disabled text-primary" tabindex="-1" aria-disabled="true">Hello, <%= username %>!</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.jsp">Logout</a>
