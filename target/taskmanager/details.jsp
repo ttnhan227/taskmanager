@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="fpt.aptech.taskmanager.entities.Tasks" %>
+<%
+    Tasks task = (Tasks) request.getAttribute("task");
+    String error = (String) request.getAttribute("error");
+    String contextPath = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css" type="text/css">
+    <link rel="stylesheet" href="<%= contextPath %>/styles.css" type="text/css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg sticky-top">
@@ -25,12 +30,12 @@
             </div>
         </div>
     </nav>
-    <div class="container mt-5">
+    <div class="main-content">
+        <div class="container mt-5">
         <div class="card">
             <div class="card-body">
                 <h2 class="mb-4">Task Details</h2>
                 <%
-                    Tasks task = (Tasks) request.getAttribute("task");
                     if (task != null) {
                 %>
                 <table class="table table-bordered">
@@ -52,6 +57,8 @@
                     }
                 %>
             </div>
+        </div>
+    </div>
         </div>
     </div>
     <footer class="footer text-center">

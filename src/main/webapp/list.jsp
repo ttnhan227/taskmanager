@@ -54,6 +54,12 @@
             </div>
         </section>
         <div class="container task-panel">
+            <!-- Delete all completed tasks button -->
+            <form method="post" action="tasks/deleteCompleted">
+                <button class="btn btn-danger btn-sm mb-3" type="submit" onclick="return confirm('Delete all completed tasks?')">
+                    Delete Completed Tasks
+                </button>
+            </form>
             <!-- Filter & Sort Form -->
             <form class="row g-3 mb-4 p-3 bg-white rounded shadow-sm" method="get" action="tasks">
                 <div class="col-md-3 col-12">
@@ -125,6 +131,19 @@
                                 %>
                                 <a href="<%= contextPath %>/tasks/details?id=<%= task.getId() %>" class="btn btn-sm btn-info">Details</a>
                                 <a href="<%= contextPath %>/tasks/edit?id=<%= task.getId() %>" class="btn btn-sm btn-warning">Edit</a>
+                                <!-- Toggle status button -->
+                                <form method="post" action="tasks/toggleStatus" style="display:inline">
+                                    <input type="hidden" name="id" value="<%= task.getId() %>" />
+                                    <input type="hidden" name="isCompleted" value="<%= !Boolean.TRUE.equals(task.getIsCompleted()) %>" />
+                                    <button type="submit" class="btn btn-sm <%= Boolean.TRUE.equals(task.getIsCompleted()) ? "btn-secondary" : "btn-success" %>">
+                                        <%= Boolean.TRUE.equals(task.getIsCompleted()) ? "Completed" : "Mark Complete" %>
+                                    </button>
+                                </form>
+                                <!-- Delete button -->
+                                <form method="get" action="tasks/delete" style="display:inline" onsubmit="return confirm('Go to delete confirmation?');">
+                                    <input type="hidden" name="id" value="<%= task.getId() %>" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
                             </div>
                         </td>
                     </tr>

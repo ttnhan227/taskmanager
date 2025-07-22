@@ -54,6 +54,26 @@ public class TasksService {
         repository.delete(id);
     }
 
+    // Deletes all tasks marked as completed
+    public void deleteCompletedTasks() {
+        List<Tasks> completedTasks = repository.findAll().stream()
+                .filter(t -> Boolean.TRUE.equals(t.getIsCompleted()))
+                .collect(Collectors.toList());
+        for (Tasks task : completedTasks) {
+            repository.delete(task.getId());
+        }
+    }
+
+    // Toggles the completion status of a task by id
+    public void toggleTaskStatus(int id, boolean isCompleted) {
+        Tasks task = repository.findById(id);
+        if (task != null) {
+            task.setIsCompleted(isCompleted);
+            task.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+            repository.update(task);
+        }
+    }
+
     public List<Tasks> getTasksByCompletion(boolean isCompleted) {
         return repository.findAll().stream()
                 .filter(t -> Objects.equals(t.getIsCompleted(), isCompleted))

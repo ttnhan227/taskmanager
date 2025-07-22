@@ -58,6 +58,7 @@
       <url-pattern>/list.jsp</url-pattern>
       <url-pattern>/edit.jsp</url-pattern>
       <url-pattern>/details.jsp</url-pattern>
+      <url-pattern>/delete.jsp</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>Admin</role-name>
