@@ -71,6 +71,14 @@ public class TaskManagerServlet extends HttpServlet {
             request.getRequestDispatcher("/create.jsp").forward(request, response);
         } else if ("/tasks".equals(servletPath) && "/delete".equals(pathInfo)) {
             // Delete page
+            String idStr = request.getParameter("id");
+            if (idStr != null) {
+                try {
+                    int id = Integer.parseInt(idStr);
+                    Tasks task = tasksService.getTaskById(id);
+                    request.setAttribute("task", task);
+                } catch (NumberFormatException ignored) {}
+            }
             request.getRequestDispatcher("/delete.jsp").forward(request, response);
         } else if ("".equals(servletPath) || "/home".equals(servletPath)) {
             // Home page
@@ -121,6 +129,29 @@ public class TaskManagerServlet extends HttpServlet {
                 } catch (NumberFormatException ignored) {}
             }
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Task not found");
+        } else if ("/tasks".equals(servletPath) && "/delete".equals(pathInfo)) {
+            String idStr = request.getParameter("id");
+            if (idStr != null) {
+                try {
+                    int id = Integer.parseInt(idStr);
+                    tasksService.deleteTask(id);
+                } catch (NumberFormatException ignored) {}
+            }
+            response.sendRedirect(request.getContextPath() + "/tasks");
+        } else if ("/tasks".equals(servletPath) && "/toggleStatus".equals(pathInfo)) {
+            String idStr = request.getParameter("id");
+            String isCompletedStr = request.getParameter("isCompleted");
+            if (idStr != null && isCompletedStr != null) {
+                try {
+                    int id = Integer.parseInt(idStr);
+                    boolean isCompleted = Boolean.parseBoolean(isCompletedStr);
+                    tasksService.toggleTaskStatus(id, isCompleted);
+                } catch (NumberFormatException ignored) {}
+            }
+            response.sendRedirect(request.getContextPath() + "/tasks");
+        } else if ("/tasks".equals(servletPath) && "/deleteCompleted".equals(pathInfo)) {
+            tasksService.deleteCompletedTasks();
+            response.sendRedirect(request.getContextPath() + "/tasks");
         } else {
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "POST method not supported yet");
         }

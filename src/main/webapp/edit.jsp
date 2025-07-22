@@ -47,6 +47,22 @@
                             <label for="dueDate" class="form-label">Due Date</label>
                             <input type="date" class="form-control" id="dueDate" name="dueDate" value="<%= task != null && task.getDueDate() != null ? task.getDueDate().toString() : "" %>">
                         </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="">-- Select Category --</option>
+                                <option value="Work" <%= task != null && "Work".equals(task.getCategory()) ? "selected" : "" %>>Work</option>
+                                <option value="Personal" <%= task != null && "Personal".equals(task.getCategory()) ? "selected" : "" %>>Personal</option>
+                                <option value="Home" <%= task != null && "Home".equals(task.getCategory()) ? "selected" : "" %>>Home</option>
+                                <option value="Study" <%= task != null && "Study".equals(task.getCategory()) ? "selected" : "" %>>Study</option>
+                                <option value="Fitness" <%= task != null && "Fitness".equals(task.getCategory()) ? "selected" : "" %>>Fitness</option>
+                                <option value="Finance" <%= task != null && "Finance".equals(task.getCategory()) ? "selected" : "" %>>Finance</option>
+                                <option value="Shopping" <%= task != null && "Shopping".equals(task.getCategory()) ? "selected" : "" %>>Shopping</option>
+                                <option value="Errands" <%= task != null && "Errands".equals(task.getCategory()) ? "selected" : "" %>>Errands</option>
+                                <option value="Travel" <%= task != null && "Travel".equals(task.getCategory()) ? "selected" : "" %>>Travel</option>
+                                <option value="Other" <%= task != null && "Other".equals(task.getCategory()) ? "selected" : "" %>>Other</option>
+                            </select>
+                        </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="isCompleted" name="isCompleted" <%= task != null && task.getIsCompleted() != null && task.getIsCompleted() ? "checked" : "" %>>
                             <label class="form-check-label" for="isCompleted">Completed</label>

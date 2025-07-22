@@ -26,8 +26,8 @@
         .col-category { width: 110px; }
         .col-tags { width: 120px; }
         .col-priority { width: 90px; }
-        .col-actions { width: 160px; }
-.actions-inline { display: flex; gap: 0.5rem; }
+        .col-actions { width: 340px; min-width: 340px; }
+.actions-inline { display: flex; gap: 0.5rem; flex-wrap: nowrap; align-items: center; }
     </style>
 </head>
 <body>
@@ -140,7 +140,7 @@
                                     </button>
                                 </form>
                                 <!-- Delete button -->
-                                <form method="get" action="tasks/delete" style="display:inline" onsubmit="return confirm('Go to delete confirmation?');">
+                                <form method="get" action="tasks/delete" style="display:inline">
                                     <input type="hidden" name="id" value="<%= task.getId() %>" />
                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
