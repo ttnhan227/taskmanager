@@ -54,10 +54,15 @@
             </div>
         </section>
         <div class="container task-panel">
-            <!-- Delete all completed tasks button -->
-            <form method="post" action="tasks/deleteCompleted">
-                <button class="btn btn-danger btn-sm mb-3" type="submit" onclick="return confirm('Delete all completed tasks?')">
-                    Delete Completed Tasks
+            <!-- Create Task and Delete Completed Tasks buttons -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a href="tasks/create" class="btn btn-success">+ Create Task</a>
+                <form method="post" action="tasks/deleteCompleted" class="mb-0">
+                    <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Delete all completed tasks?')">
+                        Delete Completed Tasks
+                    </button>
+                </form>
+            </div>
                 </button>
             </form>
             <!-- Filter & Sort Form -->

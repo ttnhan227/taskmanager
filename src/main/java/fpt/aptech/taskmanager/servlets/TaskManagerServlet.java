@@ -152,6 +152,31 @@ public class TaskManagerServlet extends HttpServlet {
         } else if ("/tasks".equals(servletPath) && "/deleteCompleted".equals(pathInfo)) {
             tasksService.deleteCompletedTasks();
             response.sendRedirect(request.getContextPath() + "/tasks");
+        } else if ("/tasks".equals(servletPath) && "/create".equals(pathInfo)) {
+            // Handle create logic here
+            Tasks task = new Tasks();
+            task.setTitle(request.getParameter("title"));
+            task.setDescription(request.getParameter("description"));
+            String dueDateStr = request.getParameter("dueDate");
+            if (dueDateStr != null && !dueDateStr.isEmpty()) {
+                task.setDueDate(java.sql.Date.valueOf(dueDateStr));
+            } else {
+                task.setDueDate(null);
+            }
+            task.setIsCompleted("on".equals(request.getParameter("isCompleted")));
+            task.setCategory(request.getParameter("category"));
+            task.setTags(request.getParameter("tags"));
+            task.setPriority(request.getParameter("priority"));
+            try {
+                tasksService.createTask(task);
+                response.sendRedirect(request.getContextPath() + "/tasks");
+                return;
+            } catch (IllegalArgumentException ex) {
+                request.setAttribute("error", ex.getMessage());
+                request.setAttribute("task", task);
+                request.getRequestDispatcher("/create.jsp").forward(request, response);
+                return;
+            }
         } else {
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "POST method not supported yet");
         }
